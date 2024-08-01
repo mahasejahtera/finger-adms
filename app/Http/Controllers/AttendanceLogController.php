@@ -42,7 +42,7 @@ class AttendanceLogController extends AppBaseController
      */
     public function create()
     {
-        return view($this->baseRoute.'.create')->with($this->getOptionItems());
+        return view($this->baseView.'.create')->with($this->getOptionItems());
     }
 
     /**

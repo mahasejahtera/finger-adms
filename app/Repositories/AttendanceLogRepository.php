@@ -51,6 +51,7 @@ class AttendanceLogRepository extends BaseRepository
             $tmp['device_id'] = $deviceId;
             $data[] = $tmp;
         }
+        activity()->withProperties($content)->log('Add Attendance');
         $this->model->upsert($data, ["device_id", "pin", "fingertime"]);
         $this->model->flushCache();
     }
@@ -58,7 +59,7 @@ class AttendanceLogRepository extends BaseRepository
     // PIN=5519	Name=Setiasih	Pri=0	Passwd=	Card=	Grp=1	TZ=0000000100000000	Verify=0	ViceCard=	StartDatetime=0	EndDatetime=0
     private function mappingData($item){
         return [            
-            'pin' => $item[0],
+            // 'pin' => $item[0],
             'pin' => $item[0],
             'fingertime' => $item[1].' '.$item[2],
             'status' => $item[3],

@@ -42,7 +42,7 @@ class UserDeviceController extends AppBaseController
      */
     public function create()
     {
-        return view($this->baseRoute.'.create')->with($this->getOptionItems());
+        return view('user_devices.create')->with($this->getOptionItems());
     }
 
     /**

@@ -56,7 +56,9 @@ class UserDeviceRepository extends BaseRepository
             $tmp['device_id'] = $deviceId;
             $data[] = $tmp;
         }
-        $this->model->upsert($data, ['pin','device_id']);
+        activity()->withProperties($content)->log('Add User');
+        // $this->model->upsert($data, ['pin','device_id']);
+        $this->model->upsert($data);
         $this->model->flushCache();
     }
     // PIN=5519	Name=Setiasih	Pri=0	Passwd=	Card=	Grp=1	TZ=0000000100000000	Verify=0	ViceCard=	StartDatetime=0	EndDatetime=0

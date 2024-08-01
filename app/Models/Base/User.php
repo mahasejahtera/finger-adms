@@ -7,6 +7,8 @@ use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Cache;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -67,6 +69,8 @@ class User extends Authenticatable
     use HasPermissions;
     use Cachable;
     use SearchModelTrait;
+    use LogsActivity;
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
     public $table = 'users';
@@ -102,6 +106,7 @@ class User extends Authenticatable
      *
      * @var array
      */
+
     protected $casts = [
         'id' => 'integer',
         'name' => 'string',
@@ -110,6 +115,11 @@ class User extends Authenticatable
         'password' => 'string',
         'remember_token' => 'string',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
 
     // Cache permissions and roles
     public function getPermissionsAttribute()

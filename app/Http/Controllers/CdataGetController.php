@@ -39,6 +39,8 @@ class CdataGetController extends Controller
         
         $device->save();
 
+        
+
 //         $textResponse = <<<STR
 // GET OPTION FROM: {$sn}
 // ATTLOGStamp={$lastStamp}

@@ -10,6 +10,7 @@ use App\Repositories\TemplateFingerprintDeviceRepository;
 use App\Repositories\UserDeviceRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class CdataPostController extends Controller
 {
@@ -27,8 +28,11 @@ class CdataPostController extends Controller
         $content = $request->getContent();
         $result = 0;
         $device = Device::firstOrCreate(['serial_number' => $sn]);
+
+        activity()->withProperties($request)->log('Cek Request');
+        
         if (env('APP_DEBUG')) {
-            \Log::info($content);
+            Log::info($content);
         }
         switch($table){
             case 'ATTLOG':
@@ -56,7 +60,7 @@ STR;
     {                
         $content = $request->getContent();
         if (env('APP_DEBUG')) {
-            \Log::info($content);
+            Log::info($content);
         }
         
         if($content){
@@ -78,11 +82,14 @@ STR;
         if($count  > 0){
             (new AttendanceLogRepository())->saveAttendance($attLog, $device->id);
             $webhook = $device->webhook;
+            
             if($webhook){
                 if(!empty($webhook->url)){
+
                     if(env('APP_DEBUG')){
-                        \Log::error('send data to webhook '.$webhook->url);
+                        Log::error('send data to webhook '.$webhook->url);
                     }
+
                     Http::post($webhook->url, ['data' => $attLog]);
                 }
             }
@@ -106,9 +113,9 @@ STR;
                     $this->saveTemplateFinger($oprLog['data'], $device->id);
                     break;
                 default:
-                    \Log::info('---- saveOperationLog ------');
-                    \Log::info('---table----'.$table);
-                    \Log::info($oprLog['data']);
+                    Log::info('---- saveOperationLog ------');
+                    Log::info('---table----'.$table);
+                    Log::info($oprLog['data']);
             }            
         }
 

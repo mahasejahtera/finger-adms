@@ -4,6 +4,9 @@ namespace App\Models;
 
 use App\Models\Base as Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
+
 // use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -102,7 +105,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class Device extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
     //     use SoftDeletes;
 
     public $table = 'devices';
@@ -184,6 +187,12 @@ class Device extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults();
+    }
+
     public function attendanceLogs()
     {
         return $this->hasMany(\App\Models\AttendanceLog::class, 'device_id');
